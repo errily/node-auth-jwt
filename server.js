@@ -1,12 +1,15 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const path = require('path');
 
 const app = express();
 
 var corsOptions = {
-  origin: "http://localhost:8081"
+  // origin: "https://article-irfan.herokuapp.com",
+  origin :"http://stupendous-goldfish.surge.sh"
 };
+
 
 app.use(cors(corsOptions));
 
@@ -28,6 +31,11 @@ app.get("/", (req, res) => {
 require('./app/routes/auth.routes')(app);
 require('./app/routes/user.routes')(app);
 require('./app/routes/article.routes') (app);
+require('./app/routes/upload.routes') (app);
+
+global.__basedir = __dirname;
+app.use(express.static(__basedir+'/resources'));
+
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
@@ -44,7 +52,7 @@ const Role = db.role;
 //   initial();
 // });
 
- db.sequelize.sync();
+db.sequelize.sync();
 
 function initial() {
   Role.create({
@@ -63,4 +71,3 @@ function initial() {
   });
 }
 
- 
